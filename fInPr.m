@@ -21,7 +21,7 @@ function [Qs,Vs,sol1,Cost,StartQP,EndQP,qU_hat] = fInPr(G,S,tV,c,X,GEN,delta,qma
         cost = q'*(diag(c)+X(GEN,GEN))*q/2 + norm(diag(delta/2)*q,1) + q'*(vtilde(GEN)-bv); 
 
         %% Constraints
-        con = (-qmax <= q <= qmax);
+        con = [-qmax <= q, q <= qmax];
 
         %% Settings and run
     %     settings = sdpsettings('verbose',0,'solver','sdpt3');
