@@ -300,9 +300,19 @@ end
     z = sdpvar(4*G,1);
     a = sdpvar(G,1);
     obj3 = norm(x(1:4*G)-z(1:4*G),2)^2; % Only z variables
-    con = (0.95*ones(G,1) <= z(1:G) <= 1.05*ones(G,1)); % z(1:G) -> v_bar
-    con = con + (zeros(G,1) <= z(G+1:2*G) <= 0.03*ones(G,1)); % z(G+1:2*G) -> delta
-    con = con + (z(G+1:2*G) + 0.02*ones(G,1) <= z(2*G+1:3*G) <= 0.18*ones(G,1)); % z(2*G+1:3*G) -> sigma
+    
+    % z(1:G) -> v_bar
+    con = (0.95*ones(G,1) <= z(1:G));
+    con = con + (z(1:G) <= 1.05*ones(G,1));
+    
+    % z(G+1:2*G) -> delta
+    con = con + (zeros(G,1) <= z(G+1:2*G));
+    con = con + (z(G+1:2*G) <= 0.03*ones(G,1));
+    
+    % z(2*G+1:3*G) -> sigma
+    con = con + (z(G+1:2*G) + 0.02*ones(G,1) <= z(2*G+1:3*G));
+    con = con + (z(2*G+1:3*G) <= 0.18*ones(G,1));
+    
     con = con + (z(2*G+1:3*G)-z(G+1:2*G) <= (diag(qmax))*z(3*G+1:4*G)); % z(3*G+1:4*G) -> с
     con = con + (z(3*G+1:4*G) >= sum(XBusExcSla(GEN,GEN))'/(1-epsilon)); 
     if IncremFlag == 0
