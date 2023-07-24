@@ -258,12 +258,16 @@ end
     % STEP 2: Compute gradients by differentiating through the control rules
 
     % New extended derivatives after Aug 5
-     dfdv = diag(1./c)*( (Vs(GEN,:)-bv*ones(S,1)'-sigma*ones(S,1)') >= 0 - (Vs(GEN,:)-bv*ones(S,1)'-delta*ones(S,1)') >= 0 -...
-     (-Vs(GEN,:)+bv*ones(S,1)'-delta*ones(S,1)') >= 0 + (-Vs(GEN,:)+bv*ones(S,1)'-sigma*ones(S,1)') >= 0 );
-    dfdvbar = diag(1./c)*( -(Vs(GEN,:)-bv*ones(S,1)'-sigma*ones(S,1)') >= 0 + (Vs(GEN,:)-bv*ones(S,1)'-delta*ones(S,1)') >= 0 +...
-     (-Vs(GEN,:)+bv*ones(S,1)'-delta*ones(S,1)') >= 0 - (-Vs(GEN,:)+bv*ones(S,1)'-sigma*ones(S,1)') >= 0 );
-    dfddelta = diag(1./c)*( (Vs(GEN,:)-bv*ones(S,1)'-delta*ones(S,1)') >= 0 - (-Vs(GEN,:)+bv*ones(S,1)'-delta*ones(S,1)') >= 0 );
-    dfdsigma = diag(1./c)*( (-Vs(GEN,:)+bv*ones(S,1)'-sigma*ones(S,1)') >= 0 - (Vs(GEN,:)-bv*ones(S,1)'-sigma*ones(S,1)') >= 0 );
+    dfdv = diag(1./c)*((Vs(GEN,:)-bv*ones(S,1)'-sigma*ones(S,1)') >= 0 - (Vs(GEN,:)-bv*ones(S,1)'-delta*ones(S,1)') >= 0 ...
+    - ((-Vs(GEN,:)+bv*ones(S,1)'-delta*ones(S,1)') >= 0) + ((-Vs(GEN,:)+bv*ones(S,1)'-sigma*ones(S,1)') >= 0));
+    
+    dfdvbar = diag(1./c)*((-(Vs(GEN,:)-bv*ones(S,1)'-sigma*ones(S,1)') >= 0) + (Vs(GEN,:)-bv*ones(S,1)'-delta*ones(S,1)') >= 0 ...
+    + ((-Vs(GEN,:)+bv*ones(S,1)'-delta*ones(S,1)') >= 0) - ((-Vs(GEN,:)+bv*ones(S,1)'-sigma*ones(S,1)') >= 0));
+    
+    dfddelta = diag(1./c)*((Vs(GEN,:)-bv*ones(S,1)'-delta*ones(S,1)') >= 0 - (-Vs(GEN,:)+bv*ones(S,1)'-delta*ones(S,1)') >= 0);
+    
+    dfdsigma = diag(1./c)*(((-Vs(GEN,:)+bv*ones(S,1)'-sigma*ones(S,1)') >= 0) - (Vs(GEN,:)-bv*ones(S,1)'-sigma*ones(S,1)') >= 0);
+
     dfdc = -diag(1./c)*Qs;
 
     for s = 1:S        
